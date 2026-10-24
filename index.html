@@ -530,7 +530,7 @@
       .main-wrapper { max-width: calc(100% - 28px); margin-top: -34px; padding: 15px 12px 12px; }
       .selection-heading h1 { font-size: 20px; }
       .loan-options-grid { gap: 10px; }
-      .loan-option { min-height: 75px; }
+      .loan-option { min-height: 75px; padding: 12px 4px 8px; }
       .loan-amount { font-size: 14px; }
       .loan-fee { font-size: 10px; padding: 3px 5px; }
       .security-badge { padding: 8px 5px; justify-content: center; gap: 5px; font-size: 10px; }
@@ -538,7 +538,14 @@
       .security-badge small { display: none; }
     }
     @media (max-width: 420px) {
-      .loan-options-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      /* Ensure 3 columns even on very narrow screens */
+      .loan-options-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+      .loan-option { min-height: 70px; padding: 10px 2px 6px; }
+      .loan-amount { font-size: 12px; margin-bottom: 4px; }
+      .loan-fee { font-size: 8px; padding: 2px 4px; }
+      .selected-check { font-size: 12px; top: 4px; right: 4px; }
+      .loan-badge { font-size: 8px; padding: 3px 6px; top: -6px; right: -2px; }
+      
       .security-badges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .security-badge small { display: block; }
     }
