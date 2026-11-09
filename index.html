@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Loan Boost - Instant Limit Increase</title>
+  <title>Fuliza Boost - Instant Limit Increase</title>
   
   <!-- Fonts & Icons -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
@@ -574,10 +574,10 @@
       <div class="hero-overlay"></div>
       <div class="hero-inner">
         <div class="brand-title" id="hero-title">
-          <span>M-Shwari</span><span>Loan Boost</span>
+          <span>Fuliza</span> <span>Boost</span>
           <i class="fas fa-chart-line brand-rise" aria-hidden="true"></i>
         </div>
-        <div class="brand-sub" id="hero-sub">Increase Your M-Shwari Loan Limit Instantly</div>
+        <div class="brand-sub" id="hero-sub">Increase Your Fuliza Loan Limit Instantly</div>
       </div>
     </section>
 
@@ -585,13 +585,13 @@
       
       <!-- Programme Selector -->
       <div class="program-selector">
-        <div class="program-card selected" id="prog-mshwari" onclick="setProgram('mshwari')">
+        <div class="program-card selected" id="prog-fuliza" onclick="setProgram('fuliza')">
+          <div class="program-title"><i class="fas fa-wallet"></i> Fuliza Boost</div>
+          <div class="program-desc">Boost your Fuliza limit</div>
+        </div>
+        <div class="program-card" id="prog-mshwari" onclick="setProgram('mshwari')">
           <div class="program-title"><i class="fas fa-piggy-bank"></i> M-Shwari</div>
           <div class="program-desc">Boost your M-Shwari limit</div>
-        </div>
-        <div class="program-card" id="prog-fuliza" onclick="setProgram('fuliza')">
-          <div class="program-title"><i class="fas fa-wallet"></i> Pochi Fuliza</div>
-          <div class="program-desc">Boost your Pochi Fuliza limit</div>
         </div>
       </div>
 
@@ -599,7 +599,7 @@
         <div class="selection-heading-main">
           <span class="selection-heading-icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
           <div>
-            <h1 id="limit-title">Choose your M-Shwari limit</h1>
+            <h1 id="limit-title">Choose your Fuliza Boost limit</h1>
             <p>Select the amount that works best for you.</p>
           </div>
         </div>
@@ -607,7 +607,7 @@
 
       <div class="info-box">
         <i class="fas fa-info"></i>
-        <span id="info-text">Choose your new M-Shwari limit and complete the payment to get instant access.</span>
+        <span id="info-text">Choose your new Fuliza Boost limit and complete the payment to get instant access.</span>
       </div>
 
       <!-- Dynamic Live Feed -->
@@ -625,7 +625,7 @@
 
       <div class="card">
         <div class="card-title">
-          <i class="fas fa-credit-card"></i> <span id="card-title">Select Your M-Shwari Limit</span>
+          <i class="fas fa-credit-card"></i> <span id="card-title">Select Your Fuliza Boost Limit</span>
         </div>
         
         <div class="loan-options-grid" id="limit-grid">
@@ -726,10 +726,10 @@
       ]
     },
     fuliza: {
-      name: 'Pochi Fuliza',
-      heroWords: ['Pochi', 'Fuliza'],
-      subtitle: 'Increase Your Pochi Fuliza Limit Instantly',
-      cardTitle: 'Select Your Pochi Fuliza Limit',
+      name: 'Fuliza Boost',
+      heroWords: ['Fuliza', 'Boost'],
+      subtitle: 'Increase Your Fuliza Loan Limit Instantly',
+      cardTitle: 'Select Your Fuliza Boost Limit',
       limits: [
         { amount: 10000, fee: 100 },
         { amount: 12500, fee: 130, badge: "Most Popular", badgeClass: "popular" },
@@ -748,7 +748,7 @@
   };
 
   // State
-  let currentProgramKey = 'mshwari';
+  let currentProgramKey = 'fuliza';
   let selectedLimit = programs[currentProgramKey].limits[0];
   let userData = { idNumber: '', phoneNumber: '' };
   let isProcessing = false;
@@ -817,7 +817,7 @@
     document.getElementById('prog-fuliza').classList.toggle('selected', programKey === 'fuliza');
 
     const titleEl = document.getElementById('hero-title');
-    titleEl.innerHTML = `<span>${prog.heroWords[0]}</span><span>${prog.heroWords[1]}</span> <i class="fas fa-chart-line brand-rise" aria-hidden="true"></i>`;
+    titleEl.innerHTML = `<span>${prog.heroWords[0]}</span> <span>${prog.heroWords[1]}</span> <i class="fas fa-chart-line brand-rise" aria-hidden="true"></i>`;
 
     document.getElementById('hero-sub').textContent = prog.subtitle;
     document.getElementById('limit-title').textContent = `Choose your ${prog.name} limit`;
@@ -1243,7 +1243,7 @@
   }
 
   // Initialize
-  setProgram('mshwari');
+  setProgram('fuliza');
   startLiveFeed();
 
   /* ============================================================
